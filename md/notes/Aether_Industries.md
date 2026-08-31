@@ -1,15 +1,18 @@
 # Aether Industries (AETHER, NSE)
 
 - Sector: Specialty chemicals — LSM (first-time-in-India molecules) + CRAMS + CEM
-- In portfolio since: tracking position only (no significant size, 2026-08-31)
-- Status: WAIT — accumulate only on pullback; starter allowed only on confirmed breakout (report verdict 2026-08-31)
+- In portfolio since: entered 2026-08-31 (entry price not recorded — entered at premium valuation, per Anurag)
+- Status: HOLD — momentum trade, 1–2 quarter horizon; exit if broader index stagnates/stabilizes at reevaluation; re-enter only after significant correction
 
 ## Business (2-3 lines)
 Surat-based specialty chemicals company on three linked models: proprietary large-scale manufacturing of 100% import-substitute molecules (4MEP, T2E, NODG — global #1/#2 positions), CRAMS, and long-term exclusive CEM contracts for Baker Hughes, Saudi Aramco, Milliken, Seqens. Thesis: new capacity ramp + contracted CEM execution — Site 5 (16 production blocks, ~₹2,000-2,100 Cr total capex) began commercial production June 2026.
 
 ## My notes & thesis (PRIMARY — Anurag's words, synthesized)
-- 2026-08-31: tracking position only; question posed — first significant buy now on technicals, or wait for correction.
-- Report verdict: WAIT for correction. Chart is Stage-2 mark-up (+124% in one year, 3.8% below ATH ₹1,717) — chart says chase strength, valuation says risk-reward is poor at 93x trailing P/E. Accumulate toward ₹1,480-1,530.
+- 2026-08-31 (thesis): Entered at a premium valuation, knowingly — riding momentum. Business can grow from here but not exceptionally well at this price.
+- Plan: keep riding the CDMO/pharma-space momentum for the next couple of months — 1 to 2 quarters.
+- Exit trigger: at reevaluation, if the broader index is stagnating or stabilizing → exit. Not here to stay in the stock long-term.
+- Re-entry: only after the price corrects significantly (report accumulate zone ₹1,480–1,530 as reference).
+- Flagged tension: the 31 Aug StockScans verdict was WAIT/accumulate-on-pullback at 93x; he chose to enter for the momentum trade anyway — his call, recorded as primary.
 
 ## Research additions (light — from StockScans report 31 Aug 2026, PDF at `references/Aether_Industries/`)
 - Delivery record: core contracted milestones delivered — Site 4 (Baker Hughes) ₹220 Cr FY26, 4x YoY; Site 3++ (Milliken, 10-yr exclusive) live Feb 2026; FY26 revenue +38%, EBITDA margin 31%. But timelines slip chronically: Site 4 ~15 months late, Site 3++ ~3 years, Site 5 ~6 months, FY24 revenue guide missed by ~35%. Rule of thumb: discount any management date by 2-4 quarters.
@@ -22,7 +25,10 @@ Surat-based specialty chemicals company on three linked models: proprietary larg
 
 ## Timeline & updates
 - 2026-08-31: note created from Anurag's StockScans entry-timing PDF (report dated 31 Aug 2026).
+- 2026-08-31: Anurag's thesis added — has entered; momentum trade, 1–2 quarter horizon, index-based exit trigger.
 
 ## Check-ins / tasks
 - Q2 FY27 results (~Nov 2026): Site 5 revenue appearance + Baker Hughes run-rate. Cron check-in 2026-11-09.
-- Technical watch: pullback zone ₹1,480-1,530; confirmed breakout > ₹1,717.
+- Exit test at reevaluation: broader index direction — stagnating/stabilizing → exit per thesis.
+- Re-entry reference: pullback zone ₹1,480–1,530 after significant correction.
+- To record: entry price / cost basis.
