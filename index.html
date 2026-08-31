@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Portfolio Analysis — Personal Stock Notes</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1a2233; --muted:#5b6472; --line:#e3e7ee;
+    --accent:#2456c8; --hold:#157f3d; --reduce:#b45309; --exit:#b91c1c; --watch:#6d28d9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+  header h1{font-size:1.55rem;margin:0 0 4px}
+  header p{margin:0;color:var(--muted);font-size:.95rem}
+  .strip{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:110px}
+  .stat b{font-size:1.35rem;display:block}
+  .stat span{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  h2{font-size:1.12rem;margin:34px 0 10px;border-bottom:2px solid var(--line);padding-bottom:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:.88rem}
+  .chip b{color:var(--accent)}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px;align-items:center}
+  .controls button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 15px;font-size:.88rem;cursor:pointer}
+  .controls button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .controls input{flex:1;min-width:180px;border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:.9rem;background:var(--card)}
+  details.card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+  details.card[open]{box-shadow:0 2px 10px rgba(20,40,90,.07)}
+  details.card>summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;padding:14px 16px}
+  details.card>summary::-webkit-details-marker{display:none}
+  details.card>summary:hover{background:#fafbfe}
+  .sname{font-weight:700;font-size:1.02rem}
+  .stk{color:var(--muted);font-size:.85rem}
+  .sec{color:var(--muted);font-size:.82rem;background:#f1f3f8;border-radius:999px;padding:2px 10px}
+  .badge{margin-left:auto;font-size:.78rem;font-weight:700;border-radius:999px;padding:3px 11px;letter-spacing:.03em}
+  .b-hold{background:#e5f4ea;color:var(--hold)} .b-reduce{background:#fdf0e0;color:var(--reduce)}
+  .b-exit{background:#fdeaea;color:var(--exit)} .b-watch{background:#f1e9fd;color:var(--watch)}
+  .next{color:var(--muted);font-size:.8rem;width:100%}
+  .body{padding:4px 18px 18px;border-top:1px solid var(--line)}
+  .body h4{margin:16px 0 5px;font-size:.83rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+  .body ul{margin:0;padding-left:20px}
+  .body li{margin:4px 0}
+  .files{margin-top:14px;padding-top:10px;border-top:1px dashed var(--line)}
+  .files a{color:var(--accent);text-decoration:none;font-size:.9rem;border:1px solid var(--line);border-radius:8px;padding:5px 11px;display:inline-block;margin:3px 6px 3px 0}
+  .files a:hover{background:#eef3ff}
+  table.cal{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  table.cal th,table.cal td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);font-size:.92rem}
+  table.cal th{background:#f1f3f8;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  table.cal tr:last-child td{border-bottom:none}
+  .d{white-space:nowrap;font-weight:600}
+  footer{margin-top:40px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:14px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Portfolio Analysis</h1>
+  <p>Personal stock notes &amp; research index — updated 31 Aug 2026 · 15 stocks tracked</p>
+</header>
+
+<div class="strip">
+  <div class="stat"><b>15</b><span>Stocks</span></div>
+  <div class="stat"><b>6</b><span>Hold / track</span></div>
+  <div class="stat"><b>3</b><span>Reduce</span></div>
+  <div class="stat"><b>2</b><span>Exit paths</span></div>
+  <div class="stat"><b>4</b><span>Watch</span></div>
+  <div class="stat"><b>13</b><span>Check-ins</span></div>
+</div>
+
+<h2>Sectors of interest</h2>
+<div class="chips">
+  <div class="chip"><b>Healthcare &amp; Pharma</b> — 3B BlackBio Dx, Beta Drugs, Gufic Biosciences, Influx HealthTech, Fermenta Biotech</div>
+  <div class="chip"><b>IT Services</b> — All E Technologies</div>
+  <div class="chip"><b>Chemicals</b> — Aarti Industries, Shree Ganesh Remedies, Aether Industries</div>
+  <div class="chip"><b>Industrials, Construction &amp; Capital Goods</b> — Pennar Industries, PSP Projects, GMM Pfaudler</div>
+  <div class="chip"><b>Education</b> — S Chand</div>
+  <div class="chip"><b>Hospitality</b> — Samhi Hotels</div>
+  <div class="chip"><b>Retail — Fashion Jewellery</b> — PNGS Gargi</div>
+</div>
+
+<h2>Stocks analyzed</h2>
+<div class="controls">
+  <button class="active" data-f="all">All</button>
+  <button data-f="hold">Hold / track</button>
+  <button data-f="reduce">Reduce</button>
+  <button data-f="exit">Exit</button>
+  <button data-f="watch">Watch</button>
+  <input id="q" type="search" placeholder="Search name, ticker, sector…">
+</div>
+
+<!-- ALL E TECHNOLOGIES -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">All E Technologies</span><span class="stk">ALLETEC · NSE Emerge</span><span class="sec">IT Services</span><span class="badge b-hold">HOLD — NO AVERAGING DOWN</span><span class="next">Next: check-in 18 Nov 2026 (Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Consulting-led Microsoft-only digital transformation partner (Dynamics 365 ERP/CRM, Data &amp; AI); ~90% repeat revenue, nine subsidiaries, all six Microsoft partner designations.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Microsoft ERP/CRM transformation engine + proprietary industry IP (Travel 365, EdTech365, etc.) + new SaaS intelligence layer.</li><li>Mainboard migration (board approved Aug 2026) = liquidity / institutional re-rating catalyst.</li><li>Extremely cheap on record: ~₹240–260 Cr mcap vs ₹140–163 Cr cash → ex-cash PE ~5x on FY26 PAT.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Largest holding; fell ~81% from ATH (₹633 → ~₹119), ~65% from buy price, near ATL.</li><li>Average-down question deferred until Q2 FY27 evidence — cheapness is real but partly earned (SME illiquidity, missed guides, PAT still falling).</li><li>Averaging down is a position-sizing question, not a valuation question — no big add; hard %-of-portfolio cap if adding.</li><li>28 Aug report: his “buy more, sell the bounce” idea rejected as averaging down in disguise; 10% in one SME is oversized — use a bounce into ₹135–147 (50/100-DMA zone) to trim toward ≤5%; hold only if able to wait 12–24 months.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>Mainboard migration completed.</li><li>Revenue AND PAT growth together; lighthouse SaaS rollouts (target 10 production rollouts); cash finally deployed into quality M&amp;A.</li><li>Fresh-buying gate: daily close &gt;₹136 on &gt;50k shares AND (closed $5–10M acquisition OR two consecutive quarters OPM &gt;16%). Invalidation: close &lt;₹116.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Another PAT-decline quarter, M&amp;A money spent poorly, mainboard stall again, product story not converting by end FY27 → reassess/exit.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Mainboard process expected within ~2 months of Aug 2026.</li><li>Check-in 18 Nov 2026 → averaging-down decision (revenue + PAT together).</li></ul>
+    <div class="files"><a href="md/notes/All_E_Technologies.md">Full note — All_E_Technologies.md</a><a href="md/research/All_E_Technologies_deep_dive_verdict_report_2026-08-28.md">Research — Deep-dive &amp; verdict report</a></div>
+  </div>
+</details>
+
+<!-- PENNAR -->
+<details class="card" data-status="reduce">
+  <summary><span class="sname">Pennar Industries</span><span class="stk">PENIND · NSE</span><span class="sec">Industrials &amp; Construction</span><span class="badge b-reduce">HOLD — REDUCED</span><span class="next">Next: check-in 16 Nov 2026 (Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Hyderabad-based diversified engineering: precision steel tubes, railway components, industrial products and pre-engineered buildings (India + US).</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Turnaround: pivot from commodity steel fabrication to higher-margin global business; US PEB is the main driver.</li><li>US presence + raw materials sourced in the US itself → no tariff pressure. Technical capabilities alright, not exceptional.</li><li>Report scorecard: only 2 of 12 management commitments fully delivered — misses cluster on margins, ROCE, working capital, leverage.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Management keeps falling short of commitments; execution exists, direction right, but pace slow — exposure already trimmed ("corrected it to some extent").</li><li>Cannot trust management completely yet; needs ≥2 consecutive quarters of good performance, then it becomes a good rerating game.</li><li>Decent return expectation ~10–40%; not a multibagger yet. Hold; do not increase allocation; keep unleveraged.</li></ul>
+    <h4>Growth triggers (re-entry criteria)</h4>
+    <ul><li>2 consecutive quarters delivering on promises with: PAT margin ~5% · D/E ~0.75 · working capital &lt;72 days · RoCE ~20%.</li><li>US order-backlog conversion at stable margins; $100M US backlog executing.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Alarm levels: D/E &gt;1.0 or working capital &gt;85 days; PEB India margin lag beyond Q2; US segment margins (employee costs +37% YoY in Q1 FY27).</li><li>Management's ROCE definition gap: quotes 20.23% (friendly formula) vs 13.76% reported.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 16 Nov 2026 — Q2 FY27 vs the four thresholds.</li><li>Rerating game only after trust is rebuilt (2–3 good quarters).</li></ul>
+    <div class="files"><a href="md/notes/Pennar_Industries.md">Full note — Pennar_Industries.md</a><a href="md/research/Pennar_Industries_promises_vs_delivery_report_2026-08-28.md">Research — Promises vs Delivery report</a></div>
+  </div>
+</details>
+
+<!-- S CHAND -->
+<details class="card" data-status="reduce">
+  <summary><span class="sname">S Chand &amp; Co</span><span class="stk">SCHAND · NSE</span><span class="sec">Education</span><span class="badge b-reduce">REDUCE — EXIT JAN–FEB 2027</span><span class="next">Next: check-in 12 Jan 2027 (sell window opens)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>K-12 textbook and supplementary education content publisher (CBSE/ICSE/state boards).</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Regulatory tailwind: NEP-era curriculum overhaul (CBSE/ICSE, since 2020) → new textbooks must be printed → one-time revenue jump.</li><li>Nothing structurally strong beyond the tailwind — no moat.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Key problem: government delays — NCERT revises textbooks in phases, one standard at a time, so the promised refresh keeps slipping.</li><li>Allocation cut to bare minimum; hold through the seasonal trough.</li><li>Heavily Q4-weighted (~80–90% of annual revenue) → sell in Jan–Feb 2027 into seasonal strength.</li></ul>
+    <h4>Growth triggers (re-entry)</h4>
+    <ul><li>Synchronized pan-India rollout + mandatory enforcement of NCERT textbooks across classes 9–12.</li><li>Technical strength or clearly good management commentary.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>NCERT rollout schedule: classes 10–11 books pushed to 2027-28; parliamentary committee flagging delays. The wait is longer than the thesis priced.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 12 Jan 2027 — Q3 FY27 commentary + sell window opens.</li><li>Classes 10–11 new books land 2027-28 (structural re-entry option).</li></ul>
+    <div class="files"><a href="md/notes/S_Chand.md">Full note — S_Chand.md</a></div>
+  </div>
+</details>
+
+<!-- PSP PROJECTS -->
+<details class="card" data-status="exit">
+  <summary><span class="sname">PSP Projects</span><span class="stk">PSPPROJECTS · NSE</span><span class="sec">Industrials &amp; Construction</span><span class="badge b-exit">EXIT — RE-ENTER LOWER</span><span class="next">Next: check-in 13 Jan 2027 (Q3 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Gujarat precast-led construction company, Adani-controlled (34.41% joint-promoter stake, Aug 2025) — effectively a contract manufacturer executing Adani projects.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Order book ₹13,245 Cr (+103% YoY), ~70% Adani Group; Dharavi ~₹12,000 Cr contract (≈₹3,000 Cr in book); Mundra workers' cluster ~₹2,000 Cr; CWG potential +~₹2,000 Cr.</li><li>Pipeline to ~₹18,000–20,000 Cr by FY30/32; precast factory at ~90% utilization with expansion.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Margins compressed dramatically: 10–15% earlier → 6–7% now, guided to stay there. Volume-for-margin trade-off.</li><li>~48x P/E already has the order book baked in. Even at 80% execution, forward P/E only compresses to ~20–26x ≈ industry average — no dramatic rerating; won't rise another 80–100% in 3 years.</li><li>Exit now, let it correct, re-enter at a lower price.</li></ul>
+    <h4>Growth triggers (re-entry)</h4>
+    <ul><li>Meaningful price/valuation correction; OPM holding the 6–7% guide; Adani order inflows hitting the ₹5,000–6,000 Cr FY27 guidance.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Q3 FY27: margin adherence, order book growth, valuation vs the 48x flagged.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 13 Jan 2027 — correction check + re-entry discussion.</li></ul>
+    <div class="files"><a href="md/notes/PSP_Projects.md">Full note — PSP_Projects.md</a></div>
+  </div>
+</details>
+
+<!-- GMM PFAUDLER -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">GMM Pfaudler</span><span class="stk">GMMPFAUDLR · NSE</span><span class="sec">Industrials &amp; Capital Goods</span><span class="badge b-hold">HOLD — ADD-GATES SET</span><span class="next">Next: check-in 20 Nov 2026 (Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>World's leading maker of glass-lined steel equipment plus mixing, filtration and engineered systems for chemical and pharma industries; global GLS duopoly with ~50%+ share.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Cyclical turnaround + margin recovery + deleveraging after the global chem-capex slump and post-acquisition leverage.</li><li>Order intake +20% to ₹3,714 Cr and backlog +34% to ₹2,194 Cr in FY26 — strongest leading indicator in years. Germany restructuring (~₹45 Cr annual savings) and group refinancing (EUR 7m by Q2 FY27) underway.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>3% position, ~10% below buy price. Verdict (28 Aug): HOLD.</li><li>No add until European order inflows show a sustained &gt;15% QoQ ramp AND PAT margin crosses 5% (currently ~1.5%).</li><li>No decrease at current technical support given the Stage 1→2 base breakout.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>European/US chem-capex revival; backlog conversion at stable margins.</li><li>Germany savings landing FY27 (₹15–17 Cr); refinancing cutting finance costs (watch &lt;₹20 Cr/qtr); non-traditional sectors (defense, nuclear, semis) now 43% of order intake.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Book-to-bill (invalidation &lt;1.0), Investor Day (targeted Aug/Sep 2026), PAT margin trajectory.</li><li>Technicals: confirmation &gt;₹1,080 on volume; invalidation &lt;₹940 (200-DMA). Supports ₹980–990 / ₹940 / ₹850.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 20 Nov 2026 — Q2 FY27 vs the add-gates.</li><li>EUR 7m repayment due by Q2 FY27.</li></ul>
+    <div class="files"><a href="md/notes/GMM_Pfaudler.md">Full note — GMM_Pfaudler.md</a></div>
+  </div>
+</details>
+
+<!-- SAMHI -->
+<details class="card" data-status="exit">
+  <summary><span class="sname">Samhi Hotels</span><span class="stk">SAMHI · NSE</span><span class="sec">Hospitality</span><span class="badge b-exit">SOLD — WATCHLIST RE-ENTRY</span><span class="next">Next: check-in 1 Feb 2027 (cycle + stage review)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Branded hotel owner-operator: 38 hotels, 6,500+ rooms, 14 cities, under Marriott, IHG and Hyatt flags; owns the real estate.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Turnaround + deleveraging + inorganic asset rebranding + capacity addition: W Hyderabad (Q4 FY27), Navi Mumbai (~700 rooms, FY31), ACIC integration, GIC upscale platform.</li><li>Franchise → managed transition lifts margins; report verdict: turnaround largely delivered, Adequate management, ~21% EV/EBITDA discount to peers.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Hotel cycle at mature upstage: occupancy ~79% near ceiling, ADR growth flat, growth flattened out. Sold — downtrend, broke major supports.</li><li>Expect horizontal accumulation/stabilization; re-enter at stage 1 → stage 2 when the hotel cycle recovers. Proceeds deployed elsewhere.</li><li>Headline 6.1x P/E is an artefact (one-off ~₹300 Cr DTA + impairment reversal + Caspia gain); honest multiple 11.8x EV/EBITDA.</li></ul>
+    <h4>Growth triggers (re-entry)</h4>
+    <ul><li>Rate-led growth returning; strong-volume weekly close above ₹168–171 (200D cluster) = distribution over.</li><li>W Hyderabad on time + OPM toward ~38% + net debt/EBITDA below 2.0x.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Likely test of ₹145–150 before a genuine base; corporate IT travel demand in Bengaluru/Hyderabad/Pune (thesis-breaker).</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 1 Feb 2027 — hotel cycle + stage-structure review.</li><li>W Hyderabad commissioning Q4 FY27.</li></ul>
+    <div class="files"><a href="md/notes/Samhi_Hotels.md">Full note — Samhi_Hotels.md</a><a href="md/research/Samhi_Hotels_correction_report_2026-08-28.md">Research — Correction report</a><a href="md/research/Samhi_Hotels_turnaround_promise_vs_delivery_report_2026-08-28.md">Research — Promises vs Delivery report</a></div>
+  </div>
+</details>
+
+<!-- 3B BLACKBIO -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">3B BlackBio Dx</span><span class="stk">3BBLACKBIO · NSE</span><span class="sec">Healthcare &amp; Pharma</span><span class="badge b-hold">HOLD — TRACKING</span><span class="next">Next: Q2 FY27 ~Oct–Nov 2026; review 17 Feb 2027</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Pure-play molecular diagnostics kit manufacturer (TRUPCR brand; ex-Kilpest India) with UK subsidiary and Coris BioConcept (Belgium).</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>European engine: TRUPCR UK growing ("Made in UK"); Coris targeting the US market — FDA approval is the biggest trigger.</li><li>Belgian government contract ~€6M (≈€2–2.4M still to deliver through FY28). FY26 revenue +74%; FY27 guide +15–20%.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Hold and track: 34 management commitments logged from the Jul 2026 guidance report; compare deliverables vs actuals on every check-in.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>US FDA approval → US sales from FY28 (submission in process).</li><li>M&amp;A expected in FY27 (~₹230–250 Cr cash deployed); Sample-to-Answer installations; Coris EBITDA-positive; reagent-rental 20–25% of revenue.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>MDx standalone missed its 15–20% guide in FY26 (+10.4%) — watch whether FY27 guide holds; Congo contract execution.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Q2 FY27 results ~Oct–Nov 2026.</li><li>Review check-in 17 Feb 2027; FY27-vs-commitments comparison 25 May 2027.</li></ul>
+    <div class="files"><a href="md/notes/3B_BlackBio_Dx.md">Full note — 3B_BlackBio_Dx.md</a></div>
+  </div>
+</details>
+
+<!-- BETA DRUGS -->
+<details class="card" data-status="reduce">
+  <summary><span class="sname">Beta Drugs</span><span class="stk">BETA · NSE</span><span class="sec">Healthcare &amp; Pharma</span><span class="badge b-reduce">REDUCE — TRIM TOWARD 4–5% CORE</span><span class="next">Next: check-in 2 Nov 2026 (EU GMP + Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Oncology-focused pharma, four engines: India's largest oncology CDMO (95%+ repeat business, ~30 partners), own branded oncology (135+ products, 7 brands &gt;₹5 Cr), exports to ~31 countries (EU GMP pending), backward-integrated oncology APIs via Adley Lab. Plus derma (Inspira) and IVF (Nivian) bets.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Mix shift: low-margin CDMO/tender exports → higher-margin branded oncology + regulated-market exports; EU GMP capex/dossiers converting into revenue.</li><li>Q1 FY27 strong: revenue +25.3% YoY, branded +47%, CMO +41%, gross margin 56.6%.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>8–9% of portfolio in one single-therapy mid-cap at 49x P/E = concentration risk. Report call (28 Aug): trim toward a 4–5% core weight; hold the core for the 2–5 yr thesis; do not add at current valuation.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Biggest catalyst: EU GMP audit outcome — Sep 2026 (already pushed 5 times).</li><li>Invalidation: FY27 growth &lt;15% or another EU GMP slip. Bull confirmation: exports ₹105–110 Cr in FY27 at 23–25% EBITDA margin.</li><li>Q2 FY27 results ~28 Oct; watch debt (₹148 Cr) and 108-day receivables stabilising.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 2 Nov 2026 — EU GMP outcome + Q2 FY27 + trim-decision status.</li></ul>
+    <div class="files"><a href="md/notes/Beta_Drugs.md">Full note — Beta_Drugs.md</a></div>
+  </div>
+</details>
+
+<!-- GUFIC -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">Gufic Biosciences</span><span class="stk">GUFICBIO · NSE</span><span class="sec">Healthcare &amp; Pharma</span><span class="badge b-hold">HOLD — CONDITIONAL</span><span class="next">Next: EU certification Sep–Oct 2026; Q2 FY27 ~Oct–Nov 2026</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Injectable drug manufacturer: domestic injectables (~50%), international (~20%), CDMO/CMO (~20%), API (~5–10%).</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Turnaround: hospital-direct experiment reversed back to stockists; cleanup cost ~₹20–22 Cr revenue but receivables now reducing.</li><li>International (better margins) + CDMO (built expertise, incl. GLP-1/semaglutide momentum) are the primary growth engines.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Hold while the cleanup proves out: trade receivables &lt;₹260–270 Cr by end FY27 + continuously falling receivable days.</li><li>Indore plant ramp 30–36% → 50–70% utilization = revenue growth + working-capital improvement = price recovery.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>Indore EU certification (expected Sep–Oct 2026) → regulated EU exports.</li><li>Hetero GLP-1 CDMO ramp Q2–Q3 FY27; FY27 guide +15% revenue, ~18% EBITDA margin.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Receivables each quarter; US FDA inspection path (target FY2029) — long-dated.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>EU certification Sep–Oct 2026; Q2 FY27 results ~Oct–Nov 2026.</li></ul>
+    <div class="files"><a href="md/notes/Gufic_Biosciences.md">Full note — Gufic_Biosciences.md</a></div>
+  </div>
+</details>
+
+<!-- INFLUX -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">Influx HealthTech</span><span class="stk">INFLUX · NSE SME</span><span class="sec">Healthcare &amp; Pharma</span><span class="badge b-hold">HOLD — EXECUTION WATCH</span><span class="next">Next: CDMO facility commissioning; results ~Nov 2026</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Mumbai-based nutraceutical/health CDMO serving 700+ brands (ayurvedic tablets, gummies, powders); expanding into pet/vet and personal care. NSE SME listing.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Four catalysts: nutraceutical CDMO facility (completing Aug 2026), high-capacity veterinary extrusion line, Tanzania/Africa approval, wholly-owned RTD subsidiary "Ola Wellness".</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Management has delivered on promises so far, but too many things promised — execution is the key risk.</li><li>Entry valuation decent; safe to hold for the next few years.</li><li>SME risk: high volatility, thin liquidity — prices can move dramatically and suddenly.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>CDMO facility operational; vet extrusion line revenue; Tanzania TBS approval; Ola Wellness first sales.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Thin analyst coverage — management commentary is the main source; verify facility commissioning and Tanzania approval on the next call.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Facility commissioning confirmation Aug–Sep 2026; next results ~Nov 2026.</li></ul>
+    <div class="files"><a href="md/notes/Influx_HealthTech.md">Full note — Influx_HealthTech.md</a></div>
+  </div>
+</details>
+
+<!-- FERMENTA BIOTECH -->
+<details class="card" data-status="watch">
+  <summary><span class="sname">Fermenta Biotech</span><span class="stk">FERMENTA · NSE</span><span class="sec">Healthcare &amp; Pharma</span><span class="badge b-watch">WATCH — AWAITING ENTRY</span><span class="next">Next: check-in 21 Nov 2026 (Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Global pure-play Vitamin D3 API maker; one of only three backward-integrated producers worldwide (own cholesterol from wool grease through finished formats).</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Product-mix shift + margin recovery: plant-based VITADEE Green (FSSAI approval Jul 2026), spray-dried D3 100 SD (EDQM CEP — one of two globally), ₹110 Cr Dahej expansion.</li><li>Also: PGA enzymes into the PLI penicillin revival; German subsidiary revenue +101% to ₹76.6 Cr.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Tracking position only. Verdict (28 Aug): WAIT — do not chase at ₹510.</li><li>At 24.8x P/E vs an 11.5x 3-yr median, the price already pays for the green-D3 turnaround before it shows in reported numbers (Q1 FY27 revenue −10.6% YoY, OPM 14.8%).</li><li>First add only on a retest of ₹440–460 holding, or a confirmed close above ₹580 on 2x volume (target ₹640–680). Invalidation: close below ₹440.</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>VITADEE Green commercial ramp through FY27; D3 100 SD European pharma push.</li><li>Delivery check: management's history is mixed — early misses (Saykha, US subsidiary, vegan D3 timeline) but real delivery FY25–26 (ROCE ~20.7%, debt down to ₹113 Cr).</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Chinese dumping of animal-grade D3 (realisations per kg); Dahej asset turnover; AGM item — ₹100 Cr Fermenta USA trading limit (subsidiary net worth −₹12.60 Cr).</li><li>11 Aug high-volume reversal candle after the ₹580 ATH = distribution warning; supports ₹486–492 / ₹436–442 / ₹370–376.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 21 Nov 2026 — entry-window review vs Q2 FY27 numbers.</li><li>VITADEE Green ramp through FY27.</li></ul>
+    <div class="files"><a href="md/notes/Fermenta_Biotech.md">Full note — Fermenta_Biotech.md</a></div>
+  </div>
+</details>
+
+<!-- AARTI -->
+<details class="card" data-status="hold">
+  <summary><span class="sname">Aarti Industries</span><span class="stk">AARTIIND · NSE</span><span class="sec">Chemicals</span><span class="badge b-hold">HOLD — GROWTH TRACK</span><span class="next">Next: Q2 FY27 results ~late Oct 2026</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Integrated specialty chemicals manufacturer with deep backward integration on benzene chemistry (NCB/DCB chains); sells into US and Middle East.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Long down-cycle clearing: capex largely complete and delivering, debt reduction starting this FY, China oversupply easing over time.</li><li>New projects expected to add ₹300–450 Cr EBITDA; management vision (three-pillar strategy) is the standout.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Likes management vision most — clear direction, well-organized presentations, execution on point.</li><li>Price crossed the 200-week moving average; good upside if execution stays on point. Backward integration + new segments = potential moat (weak today).</li></ul>
+    <h4>Growth triggers</h4>
+    <ul><li>Debt/EBITDA trending below the &lt;2.5x target; MPP/PEDA customer qualifications converting; Superform JV (Q2 FY27) and Re Aarti recycling (H2 FY27).</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Q1 FY27 debt rose on working capital — verify deleveraging actually starts in Q2 FY27; China NCB spreads.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Q2 FY27 results ~late Oct 2026 — debt-reduction proof point.</li></ul>
+    <div class="files"><a href="md/notes/Aarti_Industries.md">Full note — Aarti_Industries.md</a></div>
+  </div>
+</details>
+
+<!-- SGRL -->
+<details class="card" data-status="watch">
+  <summary><span class="sname">Shree Ganesh Remedies</span><span class="stk">SGRL · NSE</span><span class="sec">Chemicals</span><span class="badge b-watch">WATCH — DO NOT ADD YET</span><span class="next">Next: check-in 9 Nov 2026 (Q2 FY27)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Gujarat CRAMS/CDMO: complex pharma intermediates + specialty/fine chemicals (agro, polymers, electronics) for 100+ clients in 20+ countries; no branded products of its own.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Product-mix shift: specialty moving from pilot lots to industrial scale; CRAMS projects graduating to commercial as Block 7 (Dahej) comes online.</li><li>Best operating metrics in its specialty peer set (OPM 31.4%, ROCE 14.2% vs Tatva Chintan / Neogen / Anupam Rasayan) — moat real but narrow; has defended margins, not delivered growth.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Tracking position only; verdict (28 Aug): WAIT. Q1 FY27 revenue fell 41.8% YoY to ₹14 Cr, OPM cracked to 23.3%; chart late Stage-4 below all short MAs — fundamentals and chart agree.</li><li>45.7x P/E vs 33.9x 3-yr median — the price pays for a recovery no trailing quarter has shown.</li><li>Management adequate: owns misses candidly, promoter 72.84% with open-market buys Feb 2026 (₹452–516), but ~2/6 guidance hit-rate.</li></ul>
+    <h4>Entry conditions (any one)</h4>
+    <ul><li>Quarterly revenue ~₹25 Cr+ with OPM back above 25%.</li><li>Weekly close above ₹590 on ~2x volume.</li><li>Deeper correction into the ₹440–480 base (200-DMA ₹525 is first support).</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>SEA CRAMS revenue from H2 FY27; European agro orders from Q4 FY27; Block 7 commissioning Q2 FY27; Japanese MOU approvals mid-2026.</li><li>Thesis-breakers: run-rate stays &lt;₹25 Cr into H2 FY27; OPM stays &lt;25%; working-capital bloat.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 9 Nov 2026 — Q2 FY27 vs entry conditions.</li></ul>
+    <div class="files"><a href="md/notes/Shree_Ganesh_Remedies.md">Full note — Shree_Ganesh_Remedies.md</a></div>
+  </div>
+</details>
+
+<!-- AETHER -->
+<details class="card" data-status="watch">
+  <summary><span class="sname">Aether Industries</span><span class="stk">AETHER · NSE</span><span class="sec">Chemicals</span><span class="badge b-watch">WATCH — WAIT FOR CORRECTION</span><span class="next">Next: check-in 9 Nov 2026 (Q2 FY27 · Site 5 ramp test)</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Surat specialty chemicals on three linked models: proprietary first-time-in-India molecules (4MEP, T2E, NODG — global #1/#2 positions), CRAMS, and long-term exclusive CEM for Baker Hughes, Saudi Aramco, Milliken, Seqens.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>Capacity ramp + contracted CEM execution: Site 5 (16 blocks, ~₹2,000–2,100 Cr) began production Jun 2026; Site 4 (Baker Hughes) 4x'd to ₹220 Cr FY26; Milliken 10-yr exclusive live Feb 2026; FY26 revenue +38%, EBITDA margin 31%.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Tracking position only; verdict (31 Aug): WAIT for correction. 93x P/E (industry 38.2x), FCF yield −1.5%, +124% in a year, 3.8% below ATH ₹1,717 — chart says chase strength, valuation says risk-reward is poor.</li><li>Balance sheet is the constraint: net debt swung −₹373 Cr → +₹452 Cr (FY24→FY26); 5-yr OCF covers only ~35% of adjusted PAT; ₹1,500–1,600 Cr capex still to come.</li><li>Yellow flag: promoter sold ₹656 Cr in May 2025. Delivery good but dates slip chronically — discount any management date by 2–4 quarters.</li></ul>
+    <h4>Buy plan</h4>
+    <ul><li>Accumulate ₹1,480–1,530 (50-DMA + July breakout base).</li><li>Starter ≤1/3 size only on daily close &gt;₹1,717 with volume &gt;400k shares; stop &lt;₹1,580.</li><li>Thesis-changer: Site 5 blocks 1–2 reporting ~₹80–100 Cr/quarter by Q2/Q3 FY27. Thesis-breaker: Site 5 slips past Q3 FY27 with debt still rising.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>Semiconductor-grade line online end-Sep 2026 (commercial Q3 FY27); Baker Hughes peak FY27–28; CEM mix to 70% of revenue by FY30.</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>Check-in 9 Nov 2026 — Q2 FY27: Site 5 revenue + Baker Hughes run-rate + net debt.</li></ul>
+    <div class="files"><a href="md/notes/Aether_Industries.md">Full note — Aether_Industries.md</a></div>
+  </div>
+</details>
+
+<!-- PNGS GARGI -->
+<details class="card" data-status="watch">
+  <summary><span class="sname">PNGS Gargi Fashion Jewellery</span><span class="stk">BSE SME</span><span class="sec">Retail — Fashion Jewellery</span><span class="badge b-watch">WATCH — FORENSIC FLAGS</span><span class="next">Next: FY27 annual report — RPT &amp; cash check</span></summary>
+  <div class="body">
+    <h4>What it does</h4>
+    <ul><li>Branded fashion jewellery sold by piece (not weight) via 126 points of sale in 65 cities; asset-light, zero-debt, franchisee-funded; carved out of the 193-year P. N. Gadgil &amp; Sons name.</li></ul>
+    <h4>Growth thesis</h4>
+    <ul><li>20–30 franchisee-funded store openings/yr; same-store growth 30–32% inside PNG showrooms; in-house silver manufacturing; South India entry; 9KT gold ramp.</li><li>Guidance record mostly delivered: 126 touchpoints vs 100 target, PAT margin 21–23% vs ≥15% guide, zero debt maintained.</li></ul>
+    <h4>My notes — hold or sell</h4>
+    <ul><li>Forensic red flags (from the reports, risks not fraud claims): operating cash flow ₹12 Cr vs PAT ₹74 Cr over FY20–26 (0.18x); cash fell to ₹0.9 Cr in FY26; ~75–80% of revenue via the parent SIS channel; ₹25.74 Cr prior-year revenue adjustment with a vague explanation.</li><li>Hold only with the watch items clean; reassess on FY27 disclosures.</li></ul>
+    <h4>What to watch</h4>
+    <ul><li>FY27 annual report: RPT volumes, channel revenue split, cash stabilisation.</li><li>Main-board migration filing (pending); Bangalore/Chennai EBO openings; online share recovery (fell 11–12% → 4.5%).</li></ul>
+    <h4>Next timelines</h4>
+    <ul><li>FY27 annual report disclosures — the decisive checkpoint.</li></ul>
+    <div class="files"><a href="md/notes/PNGS_Gargi.md">Full note — PNGS_Gargi.md</a></div>
+  </div>
+</details>
+
+<h2>Check-in calendar</h2>
+<table class="cal">
+  <tr><th>Date</th><th>Stock</th><th>Purpose</th></tr>
+  <tr><td class="d">2 Nov 2026</td><td>Beta Drugs</td><td>EU GMP audit outcome + Q2 FY27 (~28 Oct) + H1 exports vs ₹105–110 Cr; trim-toward-core decision</td></tr>
+  <tr><td class="d">9 Nov 2026</td><td>Shree Ganesh Remedies</td><td>Q2 FY27 vs entry triggers: ₹25 Cr+ revenue / OPM &gt;25% / weekly close &gt;₹590 / ₹440–480 retest</td></tr>
+  <tr><td class="d">9 Nov 2026</td><td>Aether Industries</td><td>Q2 FY27: Site 5 revenue (~₹80–100 Cr/qtr guide), Baker Hughes run-rate, net debt trend</td></tr>
+  <tr><td class="d">16 Nov 2026</td><td>Pennar Industries</td><td>Q2 FY27 vs re-entry thresholds (PAT ~5%, D/E ~0.75, WC &lt;72d, RoCE ~20%)</td></tr>
+  <tr><td class="d">18 Nov 2026</td><td>All E Technologies</td><td>Averaging-down decision: revenue + PAT together, mainboard, lighthouses, M&amp;A; technical gate ₹136 / ₹116</td></tr>
+  <tr><td class="d">20 Nov 2026</td><td>GMM Pfaudler</td><td>Q2 FY27 vs add-gates (European orders &gt;15% QoQ ramp, PAT margin &gt;5%)</td></tr>
+  <tr><td class="d">21 Nov 2026</td><td>Fermenta Biotech</td><td>Entry-window review: ₹440–460 retest or breakout &gt;₹580; revenue growth back positive?</td></tr>
+  <tr><td class="d">1 Jan 2027</td><td>Portfolio tracker</td><td>Corpus tracker review vs targets</td></tr>
+  <tr><td class="d">12 Jan 2027</td><td>S Chand</td><td>Q3 FY27 + NCERT rollout status; sell window opens (Jan–Feb 2027)</td></tr>
+  <tr><td class="d">13 Jan 2027</td><td>PSP Projects</td><td>Margins vs guide, order inflows, correction check for re-entry</td></tr>
+  <tr><td class="d">1 Feb 2027</td><td>Samhi Hotels</td><td>Hotel-cycle status + stage-structure re-entry review</td></tr>
+  <tr><td class="d">17 Feb 2027</td><td>3B BlackBio Dx</td><td>Results, FDA status, contract progress</td></tr>
+  <tr><td class="d">25 May 2027</td><td>3B BlackBio Dx</td><td>FY27 actuals vs 34 tracked commitments</td></tr>
+</table>
+
+<footer>
+  Personal, private document — do not share this link. Positions and actions recorded here are Anurag's own calls;
+  research reports are app-generated analyses filed alongside. Generated 31 Aug 2026.
+</footer>
+
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.files a').forEach(function(a){a.target='_blank';a.rel='noopener'});
+  var btns=document.querySelectorAll('.controls button');
+  var q=document.getElementById('q');
+  var cards=document.querySelectorAll('details.card');
+  function apply(){
+    var f=document.querySelector('.controls button.active').dataset.f;
+    var t=q.value.trim().toLowerCase();
+    cards.forEach(function(c){
+      var okF=(f==='all'||c.dataset.status===f);
+      var okT=!t||c.textContent.toLowerCase().indexOf(t)!==-1;
+      c.classList.toggle('hidden',!(okF&&okT));
+    });
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');apply();
+  })});
+  q.addEventListener('input',apply);
+})();
+</script>
+</body>
+</html>
