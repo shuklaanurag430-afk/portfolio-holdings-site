@@ -19,7 +19,7 @@ h1{text-align:center;color:var(--accent);margin-bottom:6px;font-size:22px}
 .field label{display:block;font-size:12px;color:var(--label);margin-bottom:4px}
 .field input{width:100%;padding:8px 10px;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:13px;outline:none}
 .field input:focus{border-color:var(--accent)}
-.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:16px}
 .res-box{background:var(--input);border-radius:8px;padding:12px;text-align:center}
 .res-box .lbl{font-size:11px;color:var(--label);text-transform:uppercase}
 .res-box .val{font-size:20px;font-weight:700;margin-top:4px}
@@ -39,7 +39,7 @@ td{font-family:'Consolas','Courier New',monospace}
 <div class="grid">
 <div>
 <div class="panel"><h2>📋 Purchase</h2>
-<div class="field"><label>All-Inclusive Purchase Price (Rs)</label><input type="number" id="pp" value="21500000" step="100000"></div>
+<div class="field"><label>All-Inclusive Purchase Price (Rs)</label><input type="number" id="purchasePrice" value="21500000" step="100000"></div>
 <div class="field"><label>Loan Percentage (%)</label><input type="number" id="loanPct" value="88" step="1"></div>
 <div class="field"><label>Interest Rate (% p.a.)</label><input type="number" id="intRate" value="7.25" step="0.05"></div>
 <div class="field"><label>Loan Tenure (years)</label><input type="number" id="tenure" value="30" step="1"></div>
@@ -86,70 +86,89 @@ td{font-family:'Consolas','Courier New',monospace}
 function fmt(n){return 'Rs '+Math.round(n).toLocaleString('en-IN')}
 function sgn(n){return(n>=0?'+':'')+fmt(n)}
 function calc(){
-const pp=+document.getElementById('pp').value;
-const lp=+document.getElementById('loanPct').value/100;
-const ar=+document.getElementById('intRate').value/100;
-const ty=+document.getElementById('tenure').value;
-const fu=+document.getElementById('furnishing').value;
-const bb=+document.getElementById('buyBrokerage').value;
-const rent=+document.getElementById('monthlyRent').value;
-const rs=+document.getElementById('rentStartMonth').value;
-const rb=+document.getElementById('rentBrokerage').value;
-const mt=+document.getElementById('maintenance').value;
-const sp=+document.getElementById('salePrice').value;
-const sm=+document.getElementById('saleMonth').value;
-const sbp=+document.getElementById('saleBrokeragePct').value/100;
-const loanAmt=pp*lp;
-const down=pp-loanAmt;
-const mr=ar/12;const N=ty*12;
-const emi=loanAmt*mr*Math.pow(1+mr,N)/(Math.pow(1+mr,N)-1);
-let totalInvested=down+fu+bb+rb;
-let totalRentCollected=0;
-let totalEMIPaid=0;
-let bal=loanAmt;
-let cf='';
-for(let m=1;m<=sm;m++){
-    const int=bal*mr;
-    const prin=emi-int;
-    bal=Math.max(0,bal-prin);
+// Read all inputs
+var pp=+document.getElementById('purchasePrice').value;
+var lp=+document.getElementById('loanPct').value/100;
+var ar=+document.getElementById('intRate').value/100;
+var ty=+document.getElementById('tenure').value;
+var fu=+document.getElementById('furnishing').value;
+var bb=+document.getElementById('buyBrokerage').value;
+var rent=+document.getElementById('monthlyRent').value;
+var rs=+document.getElementById('rentStartMonth').value;
+var rb=+document.getElementById('rentBrokerage').value;
+var mt=+document.getElementById('maintenance').value;
+var sp=+document.getElementById('salePrice').value;
+var sm=+document.getElementById('saleMonth').value;
+var sbp=+document.getElementById('saleBrokeragePct').value/100;
+// Loan
+var loanAmt=pp*lp;
+var down=pp-loanAmt;
+var mr=ar/12;
+var N=ty*12;
+var emi=loanAmt*mr*Math.pow(1+mr,N)/(Math.pow(1+mr,N)-1);
+// Simulate
+var initialOut=down+fu+bb+rb;
+var totalRentCollected=0;
+var totalEMIPaid=0;
+var bal=loanAmt;
+var cfRows='';
+var m=0;
+for(var month=1;month<=sm;month++){
+    var interest=bal*mr;
+    var principal=emi-interest;
+    bal=Math.max(0,bal-principal);
     totalEMIPaid+=emi;
-    const r_=(m>=rs)?rent+mt:0;
+    var r_=0;
+    if(month>=rs){r_=rent+mt;}
     totalRentCollected+=r_;
-    const flow=r_-emi;
-    cf+=`<tr><td>${m}</td><td class="pos">${r_>0?fmt(r_):'\u2014'}</td><td class="neg">-${fmt(emi)}</td><td class="${flow>=0?'pos':'neg'}">${fmtS(flow)}</td><td>${fmt(bal)}</td></tr>`;
+    var flow=r_-emi;
+    var flowClass=flow>=0?'pos':'neg';
+    cfRows+='<tr><td>'+month+'</td><td class="pos">'+fmt(r_)+'</td><td class="neg">-'+fmt(emi)+'</td><td class="'+flowClass+'">'+fmtS(flow)+'</td><td>'+fmt(bal)+'</td></tr>';
+    m=month;
 }
-const saleBrk=sp*sbp;
-const netSale=sp-saleBrk-bal;
-const totalReceived=netSale+totalRentCollected;
-const profit=totalReceived-totalInvested;
-const roi=totalInvested>0?profit/totalInvested*100:0;
-const yrs=sm/12;
-const cagr=totalInvested>0&&yrs>0&&totalReceived>0?(Math.pow(totalReceived/totalInvested,1/yrs)-1)*100:0;
-let xirrEst=0;
+// Sale proceeds
+var saleBrk=sp*sbp;
+var netSale=sp-saleBrk-bal;
+// Totals
+var totalCashOut=initialOut+totalEMIPaid;
+var totalCashIn=netSale+totalRentCollected;
+var profit=totalCashIn-totalCashOut;
+var roi=totalCashOut>0?profit/totalCashOut*100:0;
+var yrs=sm/12;
+var cagr=totalCashOut>0&&yrs>0&&totalCashIn>0?(Math.pow(totalCashIn/totalCashOut,1/yrs)-1)*100:0;
+// Approximate XIRR using bisection
+var xirrEst=0;
 try{
-    let lo=-0.99,hi=10;
-    for(let i=0;i<100;i++){
-        const rate=(lo+hi)/2;
-        let npv=-(down+fu+bb);
-        for(let m=1;m<=sm;m++){
-            const r_=(m>=rs)?rent+mt:0;
-            npv+=(r_-emi)/Math.pow(1+rate,m/12);
+    var lo=-0.95,hi=5;
+    for(var iter=0;iter<100;iter++){
+        var rate=(lo+hi)/2;
+        var npv=-(initialOut);
+        var balX=loanAmt;
+        for(var mo=1;mo<=sm;mo++){
+            var intX=balX*mr;
+            var prinX=emi-intX;
+            balX=Math.max(0,balX-prinX);
+            var rX=(mo>=rs)?rent+mt:0;
+            var netX=rX-emi;
+            npv+=netX/Math.pow(1+rate,mo/12);
+            if(balX<=0)break;
         }
-        npv+=netSale/Math.pow(1+rate,(sm+1)/12);
-        if(npv>0)lo=rate;else hi=rate;
+        npv+=netSale/Math.pow(1+rate,sm/12);
+        if(npv>0){lo=rate;}else{hi=rate;}
     }
     xirrEst=lo*100;
 }catch(e){xirrEst=0}
+// Display
 document.getElementById('rEMI').textContent=fmt(emi);
 document.getElementById('rProfit').textContent=sgn(profit);
 document.getElementById('rProfit').className='val '+(profit>=0?'green':'red');
 document.getElementById('rROI').textContent=roi.toFixed(1)+'%';
 document.getElementById('rCAGR').textContent=cagr.toFixed(1)+'%';
 document.getElementById('rXIRR').textContent='~'+xirrEst.toFixed(1)+'%';
-document.getElementById('rCashIn').textContent=fmt(totalReceived);
-document.getElementById('rCashOut').textContent=fmt(totalInvested);
+document.getElementById('rCashIn').textContent=fmt(totalCashIn);
+document.getElementById('rCashOut').textContent=fmt(totalCashOut);
 document.getElementById('rLoanBal').textContent=fmt(bal);
-document.getElementById('cfBody').innerHTML=cf;
+document.getElementById('cfBody').innerHTML=cfRows;
 document.getElementById('summaryBox').innerHTML=
 '<b>Assumptions:</b><br>'+
 '\u2022 Purchase: '+fmt(pp)+' all-inclusive \u2022 Loan: '+(lp*100).toFixed(0)+'% @ '+(ar*100).toFixed(2)+'% for '+ty+' yrs<br>'+
@@ -159,7 +178,9 @@ document.getElementById('summaryBox').innerHTML=
 '\u2022 Property: 535 sq ft 2BHK, Lower Parel, 4th floor<br>'+
 '\u2022 Taxes NOT included \u2022 All figures in Rs';
 }
-document.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',calc));
+function fmt(n){return 'Rs '+Math.round(n).toLocaleString('en-IN')}
+function fmtS(n){return(n>=0?'+':'')+fmt(n)}
+document.querySelectorAll('input').forEach(function(inp){inp.addEventListener('input',calc)});
 calc();
 </script>
 </body>
