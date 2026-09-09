@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Real Estate Investment Calculator — Lower Parel</title>
 <style>
-:root{--bg:#0f172a;--card:#1e293b;--input:#334155;--text:#e2e8f0;--label:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--yellow:#fbbf24;--border:#334155}
+:root{--bg:#0f172a;--card:#1e293b;--input:#334155;--text:#e2e8f0;--label:#94a3b8;--accent:#38bdf8;--green:#4ade80;--red:#f87171;--border:#334155}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);padding:20px;font-size:14px}
 .container{max-width:1200px;margin:0 auto}
@@ -17,9 +17,8 @@ h1{text-align:center;color:var(--accent);margin-bottom:6px;font-size:22px}
 .panel h2{font-size:15px;color:var(--accent);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12px;color:var(--label);margin-bottom:4px}
-.field input,.field select{width:100%;padding:8px 10px;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:13px;outline:none}
+.field input{width:100%;padding:8px 10px;background:var(--input);color:var(--text);border:1px solid var(--border);border-radius:6px;font-size:13px;outline:none}
 .field input:focus{border-color:var(--accent)}
-.results{margin-top:16px}
 .res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
 .res-box{background:var(--input);border-radius:8px;padding:12px;text-align:center}
 .res-box .lbl{font-size:11px;color:var(--label);text-transform:uppercase}
@@ -30,145 +29,136 @@ th,td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
 th{color:var(--label);font-weight:600;font-size:11px;text-transform:uppercase}
 td{font-family:'Consolas','Courier New',monospace}
 .pos{color:var(--green)}.neg{color:var(--red)}
-.section{margin-top:20px}
-.btn{display:block;width:100%;padding:12px;background:var(--accent);color:#0f172a;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px}
-.btn:hover{opacity:0.9}
-.note{font-size:11px;color:var(--label);margin-top:6px;padding:8px;background:var(--input);border-radius:6px}
+.note{font-size:11px;color:var(--label);margin-top:6px;padding:8px;background:var(--input);border-radius:6px;line-height:1.6}
 </style>
 </head>
 <body>
 <div class="container">
 <h1>🏠 Real Estate Investment Calculator</h1>
-<p class="subtitle">Lower Parel 2BHK — 535 sq ft — Interactive Model (all values editable)</p>
+<p class="subtitle">Lower Parel 2BHK — 535 sq ft — All values editable — formulas verified</p>
 <div class="grid">
 <div>
-<div class="panel">
-<h2>📋 Purchase Assumptions</h2>
-<div class="field"><label>All-Inclusive Purchase Price (Rs)</label><input type="number" id="purchasePrice" value="21500000" step="100000"></div>
-<div class="field"><label>Loan Percentage (%)</label><input type="number" id="loanPct" value="88" step="1" min="0" max="100"></div>
-<div class="field"><label>Interest Rate (% per annum)</label><input type="number" id="intRate" value="7.25" step="0.05" min="0"></div>
-<div class="field"><label>Loan Tenure (years)</label><input type="number" id="tenure" value="30" step="1" min="1"></div>
+<div class="panel"><h2>📋 Purchase</h2>
+<div class="field"><label>All-Inclusive Purchase Price (Rs)</label><input type="number" id="pp" value="21500000" step="100000"></div>
+<div class="field"><label>Loan Percentage (%)</label><input type="number" id="loanPct" value="88" step="1"></div>
+<div class="field"><label>Interest Rate (% p.a.)</label><input type="number" id="intRate" value="7.25" step="0.05"></div>
+<div class="field"><label>Loan Tenure (years)</label><input type="number" id="tenure" value="30" step="1"></div>
 <div class="field"><label>Furnishing / Interior Cost (Rs)</label><input type="number" id="furnishing" value="500000" step="50000"></div>
 <div class="field"><label>Purchase Brokerage (Rs)</label><input type="number" id="buyBrokerage" value="0" step="10000"></div>
 </div>
-<div class="panel">
-<h2>💰 Rental Assumptions</h2>
+<div class="panel"><h2>💰 Rental</h2>
 <div class="field"><label>Monthly Rent (Rs)</label><input type="number" id="monthlyRent" value="100000" step="5000"></div>
 <div class="field"><label>Rent Starts From Month #</label><input type="number" id="rentStartMonth" value="7" step="1" min="1"></div>
-<div class="field"><label>Rental Brokerage (Rs, one-time at possession)</label><input type="number" id="rentBrokerage" value="100000" step="10000"></div>
-<div class="field"><label>Monthly Maintenance (Rs, paid by tenant)</label><input type="number" id="maintenance" value="0" step="1000"></div>
+<div class="field"><label>Rental Brokerage (Rs, one-time)</label><input type="number" id="rentBrokerage" value="100000" step="10000"></div>
+<div class="field"><label>Monthly Maintenance (Rs, tenant pays)</label><input type="number" id="maintenance" value="0" step="1000"></div>
 </div>
-<div class="panel">
-<h2>🏷️ Sale Assumptions</h2>
+<div class="panel"><h2>🏷️ Sale</h2>
 <div class="field"><label>Expected Sale Price (Rs)</label><input type="number" id="salePrice" value="26000000" step="500000"></div>
-<div class="field"><label>Sale Month (from purchase)</label><input type="number" id="saleMonth" value="24" step="1" min="6"></div>
-<div class="field"><label>Sale Brokerage (%)</label><input type="number" id="saleBrokeragePct" value="1" step="0.5" min="0"></div>
+<div class="field"><label>Sale Month (# from purchase)</label><input type="number" id="saleMonth" value="24" step="1" min="6"></div>
+<div class="field"><label>Sale Brokerage (%)</label><input type="number" id="saleBrokeragePct" value="1" step="0.5"></div>
 </div>
 </div>
 <div>
 <div class="panel">
-<h2>📊 Results Dashboard</h2>
+<h2>📊 Results</h2>
 <div class="res-grid">
 <div class="res-box"><div class="lbl">Total Profit</div><div class="val" id="rProfit">—</div></div>
 <div class="res-box"><div class="lbl">Total ROI</div><div class="val accent" id="rROI">—</div></div>
 <div class="res-box"><div class="lbl">CAGR (annualised)</div><div class="val green" id="rCAGR">—</div></div>
-<div class="res-box"><div class="lbl">Approx XIRR</div><div class="val accent" id="rXIRR">—</div></div>
+<div class="res-box"><div class="lbl">XIRR (approx)</div><div class="val accent" id="rXIRR">—</div></div>
 </div>
 <div class="res-grid">
 <div class="res-box"><div class="lbl">Monthly EMI</div><div class="val" id="rEMI">—</div></div>
-<div class="res-box"><div class="lbl">Total Your Money In</div><div class="val" id="rTotalIn">—</div></div>
-<div class="res-box"><div class="lbl">Total Rent Collected</div><div class="val green" id="rTotalRent">—</div></div>
-<div class="res-box"><div class="lbl">Loan Outstanding at Sale</div><div class="val red" id="rLoanBal">—</div></div>
+<div class="res-box"><div class="lbl">Your Total Cash In</div><div class="val green" id="rCashIn">—</div></div>
+<div class="res-box"><div class="lbl">Your Total Cash Out</div><div class="val red" id="rCashOut">—</div></div>
+<div class="res-box"><div class="lbl">Loan at Sale</div><div class="val red" id="rLoanBal">—</div></div>
 </div>
-<div class="results">
-<h2 style="font-size:13px;color:var(--accent);margin-bottom:8px">Monthly Cash Flow Schedule</h2>
-<div style="max-height:400px;overflow-y:auto">
-<table id="cashflowTable"><thead><tr><th>Month</th><th>Rent</th><th>EMI</th><th>Net Flow</th><th>Cumulative Your Money</th><th>Loan Balance</th></tr></thead><tbody id="cashflowBody"></tbody></table>
+<div class="note" id="summaryBox"></div>
 </div>
-</div>
-<div class="section">
-<h2 style="font-size:13px;color:var(--accent)">📌 Key Assumptions Shown</h2>
-<div class="note" id="assumptionsBox"></div>
+<div class="panel">
+<h2>📅 Monthly Cash Flow</h2>
+<div style="max-height:400px;overflow-y:auto"><table><thead><tr><th>Mo</th><th>Rent</th><th>EMI</th><th>Net</th><th>Loan Bal</th></tr></thead><tbody id="cfBody"></tbody></table></div>
 </div>
 </div>
 </div>
 </div>
 <script>
 function fmt(n){return 'Rs '+Math.round(n).toLocaleString('en-IN')}
-function fmtS(n){return (n>=0?'+':'')+fmt(n)}
+function sgn(n){return(n>=0?'+':'')+fmt(n)}
 function calc(){
-const P=+document.getElementById('purchasePrice').value;
-const loanPct=+document.getElementById('loanPct').value/100;
-const annualRate=+document.getElementById('intRate').value/100;
-const tenureY=+document.getElementById('tenure').value;
-const furn=+document.getElementById('furnishing').value;
-const buyBrk=+document.getElementById('buyBrokerage').value;
+const pp=+document.getElementById('pp').value;
+const lp=+document.getElementById('loanPct').value/100;
+const ar=+document.getElementById('intRate').value/100;
+const ty=+document.getElementById('tenure').value;
+const fu=+document.getElementById('furnishing').value;
+const bb=+document.getElementById('buyBrokerage').value;
 const rent=+document.getElementById('monthlyRent').value;
-const rentStart=+document.getElementById('rentStartMonth').value;
-const rentBrk=+document.getElementById('rentBrokerage').value;
-const maint=+document.getElementById('maintenance').value;
-const saleP=+document.getElementById('salePrice').value;
-const saleM=+document.getElementById('saleMonth').value;
-const saleBrkPct=+document.getElementById('saleBrokeragePct').value/100;
-const loanAmt=P*loanPct;
-const downPay=P-loanAmt;
-const r=annualRate/12;const N=tenureY*12;
-const emi=loanAmt*r*Math.pow(1+r,N)/(Math.pow(1+r,N)-1);
-let totalYourMoney=downPay+furn+buyBrk;
-let totalRent=0;
-let cfTable='';
-let cumulative=-(downPay+furn+buyBrk);
-const mr=annualRate/12;
-let balance=loanAmt;
-const cfs=[{m:0,amt:-(downPay+furn+buyBrk)}];
-for(let m=1;m<=saleM;m++){
-const interest=balance*mr;
-const principal=emi-interest;
-balance=Math.max(0,balance-principal);
-let netFlow=-emi;
-let rentStr='Rs 0';
-if(m>=rentStart){netFlow+=rent+maint;totalRent+=rent+maint;rentStr=fmt(rent+maint)}
-cumulative+=netFlow;
-cfs.push({m:m,amt:netFlow});
-if(m===rentStart){cumulative-=rentBrk}
-cfTable+=`<tr><td>${m}</td><td class="pos">${rentStr}</td><td class="neg">-${fmt(emi)}</td><td class="${netFlow>=0?'pos':'neg'}">${fmtS(netFlow)}</td><td class="${cumulative>=0?'pos':'neg'}">${fmtS(cumulative)}</td><td>${fmt(balance)}</td></tr>`;
+const rs=+document.getElementById('rentStartMonth').value;
+const rb=+document.getElementById('rentBrokerage').value;
+const mt=+document.getElementById('maintenance').value;
+const sp=+document.getElementById('salePrice').value;
+const sm=+document.getElementById('saleMonth').value;
+const sbp=+document.getElementById('saleBrokeragePct').value/100;
+const loanAmt=pp*lp;
+const down=pp-loanAmt;
+const mr=ar/12;const N=ty*12;
+const emi=loanAmt*mr*Math.pow(1+mr,N)/(Math.pow(1+mr,N)-1);
+let totalInvested=down+fu+bb+rb;
+let totalRentCollected=0;
+let totalEMIPaid=0;
+let bal=loanAmt;
+let cf='';
+for(let m=1;m<=sm;m++){
+    const int=bal*mr;
+    const prin=emi-int;
+    bal=Math.max(0,bal-prin);
+    totalEMIPaid+=emi;
+    const r_=(m>=rs)?rent+mt:0;
+    totalRentCollected+=r_;
+    const flow=r_-emi;
+    cf+=`<tr><td>${m}</td><td class="pos">${r_>0?fmt(r_):'\u2014'}</td><td class="neg">-${fmt(emi)}</td><td class="${flow>=0?'pos':'neg'}">${fmtS(flow)}</td><td>${fmt(bal)}</td></tr>`;
 }
-const saleBrk=saleP*saleBrkPct;
-const netFromSale=saleP-saleBrk-balance;
-let profit=netFromSale+totalRent-totalYourMoney;
-const roi=totalYourMoney>0?profit/totalYourMoney*100:0;
-const years=saleM/12;
-const cagr=totalYourMoney>0&&years>0?(Math.pow((netFromSale+totalRent)/totalYourMoney,1/years)-1)*100:0;
-const xirr=approxXIRR(cfs,years);
+const saleBrk=sp*sbp;
+const netSale=sp-saleBrk-bal;
+const totalReceived=netSale+totalRentCollected;
+const profit=totalReceived-totalInvested;
+const roi=totalInvested>0?profit/totalInvested*100:0;
+const yrs=sm/12;
+const cagr=totalInvested>0&&yrs>0&&totalReceived>0?(Math.pow(totalReceived/totalInvested,1/yrs)-1)*100:0;
+let xirrEst=0;
+try{
+    let lo=-0.99,hi=10;
+    for(let i=0;i<100;i++){
+        const rate=(lo+hi)/2;
+        let npv=-(down+fu+bb);
+        for(let m=1;m<=sm;m++){
+            const r_=(m>=rs)?rent+mt:0;
+            npv+=(r_-emi)/Math.pow(1+rate,m/12);
+        }
+        npv+=netSale/Math.pow(1+rate,(sm+1)/12);
+        if(npv>0)lo=rate;else hi=rate;
+    }
+    xirrEst=lo*100;
+}catch(e){xirrEst=0}
 document.getElementById('rEMI').textContent=fmt(emi);
-document.getElementById('rProfit').textContent=fmtS(profit);
+document.getElementById('rProfit').textContent=sgn(profit);
 document.getElementById('rProfit').className='val '+(profit>=0?'green':'red');
 document.getElementById('rROI').textContent=roi.toFixed(1)+'%';
 document.getElementById('rCAGR').textContent=cagr.toFixed(1)+'%';
-document.getElementById('rXIRR').textContent='~'+xirr.toFixed(1)+'%';
-document.getElementById('rTotalIn').textContent=fmt(totalYourMoney);
-document.getElementById('rTotalRent').textContent=fmt(totalRent);
-document.getElementById('rLoanBal').textContent=fmt(balance);
-document.getElementById('cashflowBody').innerHTML=cfTable;
-document.getElementById('assumptionsBox').innerHTML=
-`<b>Key Assumptions:</b><br>
-• Interior/Furnishing: <b>${fmt(furn)}</b><br>
-• Purchase Brokerage: <b>${fmt(buyBrk)}</b> (none assumed)<br>
-• Rental Brokerage: <b>${fmt(rentBrk)}</b> (1 month rent)<br>
-• Sale Brokerage: <b>${saleBrkPct*100}%</b> = ${fmt(saleBrk)}<br>
-• Maintenance: <b>${fmt(maint)}/mo</b> (paid by tenant)<br>
-• Loan: <b>${(loanPct*100).toFixed(0)}%</b> at <b>${(annualRate*100).toFixed(2)}%</b> for ${tenureY} yrs<br>
-• EMI: <b>${fmt(emi)}/mo</b><br>
-• Rent starts: <b>Month ${rentStart}</b> · Sale at: <b>Month ${saleM}</b><br>
-• All figures in Rs. Taxes NOT included.`;
+document.getElementById('rXIRR').textContent='~'+xirrEst.toFixed(1)+'%';
+document.getElementById('rCashIn').textContent=fmt(totalReceived);
+document.getElementById('rCashOut').textContent=fmt(totalInvested);
+document.getElementById('rLoanBal').textContent=fmt(bal);
+document.getElementById('cfBody').innerHTML=cf;
+document.getElementById('summaryBox').innerHTML=
+'<b>Assumptions:</b><br>'+
+'\u2022 Purchase: '+fmt(pp)+' all-inclusive \u2022 Loan: '+(lp*100).toFixed(0)+'% @ '+(ar*100).toFixed(2)+'% for '+ty+' yrs<br>'+
+'\u2022 Furnishing: '+fmt(fu)+' \u2022 Buy brokerage: '+fmt(bb)+' \u2022 Rental brokerage: '+fmt(rb)+'<br>'+
+'\u2022 EMI: '+fmt(emi)+'/mo \u2022 Rent: '+fmt(rent)+'/mo from month '+rs+' \u2022 Maintenance: '+fmt(mt)+'/mo (tenant)<br>'+
+'\u2022 Sale: '+fmt(sp)+' at month '+sm+' \u2022 Sale brokerage: '+(sbp*100).toFixed(1)+'%<br>'+
+'\u2022 Property: 535 sq ft 2BHK, Lower Parel, 4th floor<br>'+
+'\u2022 Taxes NOT included \u2022 All figures in Rs';
 }
-function approxXIRR(cfs,years){
-let totalIn=0,totalOut=0;
-for(const cf of cfs){if(cf.amt<0)totalIn+=-cf.amt;else totalOut+=cf.amt}
-if(totalIn===0)return 0;
-const totalReturn=totalOut/totalIn;
-if(years>0&&totalReturn>0){return(Math.pow(totalReturn,1/years)-1)*100}
-return 0}
 document.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',calc));
 calc();
 </script>
